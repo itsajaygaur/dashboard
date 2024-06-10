@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navItems = [
   {
@@ -8,22 +11,29 @@ const navItems = [
   },
   {
     id: 2,
-    name: "Profile",
-    link: "/",
+    name: "Leads",
+    link: "/leads",
   },
   {
     id: 3,
     name: "Settings",
-    link: "/",
+    link: "/settings",
   },
 ];
 
 export default function Sidemenu() {
+  const path = usePathname();
+
   return (
     <>
       {navItems.map((item) => (
-        <li key={item.id}>
-          <Link href={item.link}>{item.name}</Link>
+        <li key={item.id} className="">
+          <Link
+            className={` ${path === item.link ? "active" : ""} `}
+            href={item.link}
+          >
+            {item.name}
+          </Link>
         </li>
       ))}
     </>

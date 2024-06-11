@@ -2,7 +2,7 @@ import { ThemeToggle } from "./theme-toggle";
 
 export default function Navbar() {
   return (
-    <nav className="flex justify-between items-center p-4 sticky top-0 ">
+    <nav className="flex justify-between items-center p-4 sticky z-[2] top-0 ">
       <div>
         <label
           htmlFor="my-drawer"

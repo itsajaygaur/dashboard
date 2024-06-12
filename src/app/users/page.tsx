@@ -1,3 +1,5 @@
+"use client";
+import UserForm from "@/components/user-form";
 import { BsThreeDots } from "react-icons/bs";
 import { FiPlus } from "react-icons/fi";
 
@@ -33,12 +35,29 @@ export default function Leads() {
     <section className="p-5">
       <div className="flex justify-between gap-5 items-center mb-5">
         <h1>Leads</h1>
-        <button className="btn btn-primary">
+        <button
+          className="btn btn-primary"
+          onClick={() =>
+            (
+              document.getElementById("my-modal") as HTMLDialogElement
+            ).showModal()
+          }
+        >
           <FiPlus /> Add New
         </button>
+
+        <dialog id="my-modal" className="modal">
+          <div className="modal-box">
+            <UserForm />
+          </div>
+
+          <form method="dialog" className="modal-backdrop">
+            <button>close</button>
+          </form>
+        </dialog>
       </div>
 
-      <div className="overflow-x-auto border rounded-lg">
+      <div className="overflow-x-auto border border-base-200 rounded-lg">
         <table className="table ">
           {/* head */}
           <thead>
@@ -47,7 +66,7 @@ export default function Leads() {
               <th>Name</th>
               <th>Email</th>
               <th>Status</th>
-              <th>Country</th>
+              <th>Created At</th>
             </tr>
           </thead>
           <tbody>
@@ -57,7 +76,7 @@ export default function Leads() {
                 <td>{item.name}</td>
                 <td>{item.email}</td>
                 <td>{item.status}</td>
-                <td>{item.country}</td>
+                <td>{new Date().toDateString()}</td>
                 <td>
                   <button className="btn btn-ghost btn-sm">
                     <BsThreeDots />

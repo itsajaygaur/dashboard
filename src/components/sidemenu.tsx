@@ -11,13 +11,14 @@ const navItems = [
   },
   {
     id: 2,
-    name: "Leads",
-    link: "/leads",
+    name: "Users",
+    link: "/users",
   },
   {
     id: 3,
     name: "Settings",
     link: "/settings",
+    disabled: true,
   },
 ];
 
@@ -27,7 +28,7 @@ export default function Sidemenu() {
   return (
     <>
       {navItems.map((item) => (
-        <li key={item.id} className="">
+        <li key={item.id}>
           <Link
             className={` ${path === item.link ? "active" : ""} `}
             href={item.link}

@@ -21,12 +21,12 @@ export default function UserForm() {
           </div>
 
           <div>
-            <select className="select select-bordered w-full">
-              <option disabled selected>
+            <select defaultValue="" className="select select-bordered w-full">
+              <option value="" disabled>
                 Status
               </option>
-              <option>Active</option>
-              <option>Inactive</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
             </select>
           </div>
 
@@ -50,7 +50,7 @@ export default function UserForm() {
             Cancel
           </button>
           <button className="btn btn-primary" type="submit">
-            Submit
+            Save
           </button>
         </div>
       </form>

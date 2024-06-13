@@ -1,7 +1,7 @@
-"use client";
-import UserForm from "@/components/user-form";
 import { BsThreeDots } from "react-icons/bs";
-import { FiPlus } from "react-icons/fi";
+import AddNewBtn from "./_components/add-new-btn";
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 const data = [
   {
@@ -30,31 +30,17 @@ const data = [
   },
 ];
 
-export default function Leads() {
+export default async function Leads() {
+  const result = getDocs(collection(db, "users"));
+  const users = (await result).docs.map((doc) => doc.data());
+
+  console.log("userss -> ", users);
+
   return (
     <section className="p-5">
       <div className="flex justify-between gap-5 items-center mb-5">
         <h1>Leads</h1>
-        <button
-          className="btn btn-primary"
-          onClick={() =>
-            (
-              document.getElementById("my-modal") as HTMLDialogElement
-            ).showModal()
-          }
-        >
-          <FiPlus /> Add New
-        </button>
-
-        <dialog id="my-modal" className="modal">
-          <div className="modal-box">
-            <UserForm />
-          </div>
-
-          <form method="dialog" className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
+        <AddNewBtn />
       </div>
 
       <div className="overflow-x-auto border border-base-200 rounded-lg">

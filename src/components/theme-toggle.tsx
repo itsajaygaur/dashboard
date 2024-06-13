@@ -25,6 +25,9 @@ export function ThemeToggle() {
         <li onClick={() => setTheme("cupcake")}>
           <a>Cupcake</a>
         </li>
+        <li onClick={() => setTheme("synthwave")}>
+          <a>Synthwave</a>
+        </li>
       </ul>
     </div>
   );

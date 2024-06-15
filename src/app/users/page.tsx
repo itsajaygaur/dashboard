@@ -48,7 +48,7 @@ export default async function Leads() {
           {/* head */}
           <thead>
             <tr>
-              <th></th>
+              <th>Serial No.</th>
               <th>Name</th>
               <th>Email</th>
               <th>Status</th>
@@ -56,20 +56,21 @@ export default async function Leads() {
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
-              <tr key={item.id}>
-                <th>{item.id}</th>
-                <td>{item.name}</td>
-                <td>{item.email}</td>
-                <td>{item.status}</td>
-                <td>{new Date().toDateString()}</td>
-                <td>
-                  <button className="btn btn-ghost btn-sm">
-                    <BsThreeDots />
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {users &&
+              users.map((item, index) => (
+                <tr key={item.email}>
+                  <th>{index + 1}</th>
+                  <td>{item.name}</td>
+                  <td>{item.email}</td>
+                  <td>{item.status}</td>
+                  <td>{new Date().toDateString()}</td>
+                  <td>
+                    <button className="btn btn-ghost btn-sm">
+                      <BsThreeDots />
+                    </button>
+                  </td>
+                </tr>
+              ))}
             {/* row 1 */}
           </tbody>
         </table>

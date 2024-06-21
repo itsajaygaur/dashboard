@@ -2,9 +2,13 @@
 import UserForm from "@/components/user-form";
 import { User } from "@/types";
 import { DocumentData } from "firebase/firestore";
+import { useState } from "react";
 import { MdEdit } from "react-icons/md";
 
-export default function UserTable({ users }: { users: DocumentData[] }) {
+export default function UserTable({ users }: { users: User[] }) {
+  const [selectAll, setSelectAll] = useState<string[]>([]);
+  console.log("chec", selectAll);
+
   return (
     <div className="overflow-x-auto border border-base-200 rounded-lg">
       <table className="table ">
@@ -13,7 +17,18 @@ export default function UserTable({ users }: { users: DocumentData[] }) {
           <tr>
             {/* <th>Serial No.</th> */}
             <th>
-              <input type="checkbox" className="checkbox checkbox-sm" />
+              <input
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setSelectAll([...users.map((item) => item.id)]);
+                  } else {
+                    setSelectAll([]);
+                  }
+                }}
+                checked={selectAll.length === users.length}
+                type="checkbox"
+                className="checkbox checkbox-sm"
+              />
             </th>
             <th>Name</th>
             <th>Email</th>
@@ -31,7 +46,18 @@ export default function UserTable({ users }: { users: DocumentData[] }) {
               >
                 {/* <th>{index + 1}</th> */}
                 <th>
-                  <input type="checkbox" className="checkbox checkbox-sm" />
+                  <input
+                    checked={selectAll.includes(item.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectAll((prev) => [...prev, item.id]);
+                      } else {
+                        setSelectAll(selectAll.filter((id) => id !== item.id));
+                      }
+                    }}
+                    type="checkbox"
+                    className="checkbox checkbox-sm"
+                  />
                 </th>
                 <td>{item.name}</td>
                 <td>{item.email}</td>

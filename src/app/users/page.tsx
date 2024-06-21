@@ -33,8 +33,13 @@ import { User } from "@/types";
 
 export default async function Leads() {
   const result = getDocs(collection(db, "users"));
-  const users = (await result).docs.map((doc) => doc.data());
-
+  const users = (await result).docs.map((doc) => {
+    return {
+      id: doc.id,
+      ...doc.data(),
+    };
+  }) as User[];
+  console.log("users - > ", users);
   return (
     <section className="p-5">
       <div className="flex justify-between gap-5 items-center mb-5">

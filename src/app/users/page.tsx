@@ -1,40 +1,39 @@
-import { BsThreeDots } from "react-icons/bs";
 import AddNewBtn from "./_components/add-new-btn";
-import { collection, getDocs, query } from "firebase/firestore";
+import { DocumentData, collection, getDocs, query } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import UserTable from "./_components/user-table";
+import { User } from "@/types";
 
-const data = [
-  {
-    id: 1,
-    name: "John Doe",
-    image: "https://api.lorem.space/image/face?w=150&h=150",
-    email: "john@example.com",
-    country: "India",
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    image: "https://api.lorem.space/image/face?w=150&h=150",
-    email: "john@example.com",
-    country: "India",
-    status: "Active",
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    image: "https://api.lorem.space/image/face?w=150&h=150",
-    email: "john@example.com",
-    country: "India",
-    status: "Active",
-  },
-];
+// const data = [
+//   {
+//     id: 1,
+//     name: "John Doe",
+//     image: "https://api.lorem.space/image/face?w=150&h=150",
+//     email: "john@example.com",
+//     country: "India",
+//     status: "Active",
+//   },
+//   {
+//     id: 2,
+//     name: "John Doe",
+//     image: "https://api.lorem.space/image/face?w=150&h=150",
+//     email: "john@example.com",
+//     country: "India",
+//     status: "Active",
+//   },
+//   {
+//     id: 3,
+//     name: "John Doe",
+//     image: "https://api.lorem.space/image/face?w=150&h=150",
+//     email: "john@example.com",
+//     country: "India",
+//     status: "Active",
+//   },
+// ];
 
 export default async function Leads() {
   const result = getDocs(collection(db, "users"));
   const users = (await result).docs.map((doc) => doc.data());
-
-  console.log("userss -> ", users);
 
   return (
     <section className="p-5">
@@ -43,38 +42,7 @@ export default async function Leads() {
         <AddNewBtn />
       </div>
 
-      <div className="overflow-x-auto border border-base-200 rounded-lg">
-        <table className="table ">
-          {/* head */}
-          <thead>
-            <tr>
-              <th>Serial No.</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users &&
-              users.map((item, index) => (
-                <tr key={item.email}>
-                  <th>{index + 1}</th>
-                  <td>{item.name}</td>
-                  <td>{item.email}</td>
-                  <td>{item.status}</td>
-                  <td>{new Date().toDateString()}</td>
-                  <td>
-                    <button className="btn btn-ghost btn-sm">
-                      <BsThreeDots />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            {/* row 1 */}
-          </tbody>
-        </table>
-      </div>
+      <UserTable users={users} />
     </section>
   );
 }

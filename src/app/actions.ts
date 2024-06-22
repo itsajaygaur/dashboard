@@ -8,6 +8,8 @@ import {
   query,
   serverTimestamp,
   where,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { revalidatePath } from "next/cache";
@@ -28,6 +30,22 @@ export async function addUser(user: z.infer<typeof userSchema>) {
     revalidatePath("/users");
     return { success: true, message: "user added successfully!" };
   } catch (error) {
+    return { success: false, message: "something went wrong" };
+  }
+}
+
+export async function deleteUser(users: string[]) {
+  try {
+    if (users.length === 0)
+      return { success: false, message: "no user selected" };
+    users.forEach(async (id) => {
+      await deleteDoc(doc(db, "users", id));
+    });
+
+    revalidatePath("/users");
+    return { success: true, message: "user deleted successfully!" };
+  } catch (error) {
+    console.log("err", error);
     return { success: false, message: "something went wrong" };
   }
 }

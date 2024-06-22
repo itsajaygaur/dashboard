@@ -100,8 +100,12 @@ export default function UserForm() {
           >
             Cancel
           </button>
-          <button className="btn btn-primary" type="submit">
-            Save
+          <button
+            disabled={isSubmitting}
+            className="btn btn-primary"
+            type="submit"
+          >
+            {isSubmitting ? "Saving..." : "Save"}
           </button>
         </div>
       </form>

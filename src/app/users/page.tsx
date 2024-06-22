@@ -35,17 +35,18 @@ export default async function Leads() {
   const result = getDocs(collection(db, "users"));
   const users = (await result).docs.map((doc) => {
     return {
-      id: doc.id,
       ...doc.data(),
+      id: doc.id,
+      createdAt: doc.data().createdAt.toDate(),
     };
   }) as User[];
-  console.log("users - > ", users);
+  // console.log("users - > ", users);
   return (
     <section className="p-5">
-      <div className="flex justify-between gap-5 items-center mb-5">
+      {/* <div className="flex justify-between gap-5 items-center mb-5">
         <h1>Leads</h1>
         <AddNewBtn />
-      </div>
+      </div> */}
 
       <UserTable users={users} />
     </section>

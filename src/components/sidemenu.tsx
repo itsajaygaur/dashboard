@@ -14,12 +14,12 @@ const navItems = [
     name: "Users",
     link: "/users",
   },
-  {
-    id: 3,
-    name: "Settings",
-    link: "/settings",
-    disabled: true,
-  },
+  // {
+  //   id: 3,
+  //   name: "Settings",
+  //   link: "/settings",
+  //   disabled: true,
+  // },
 ];
 
 export default function Sidemenu() {

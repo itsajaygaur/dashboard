@@ -1,7 +1,7 @@
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  status: "active" | "inactive";
-  createdAt: Date;
-};
+// export type User = {
+//   id: number;
+//   name: string;
+//   email: string;
+//   status: "active" | "inactive";
+//   createdAt: Date;
+// };

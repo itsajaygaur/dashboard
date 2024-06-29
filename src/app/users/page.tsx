@@ -1,8 +1,8 @@
+import { users } from "@/db/schema";
 import AddNewBtn from "./_components/add-new-btn";
-import { DocumentData, collection, getDocs, query } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+// import { db } from "@/lib/firebase";
 import UserTable from "./_components/user-table";
-import { User } from "@/types";
+import db from "@/db/drizzle";
 
 // const data = [
 //   {
@@ -31,24 +31,14 @@ import { User } from "@/types";
 //   },
 // ];
 
-export default async function Leads() {
-  const result = getDocs(collection(db, "users"));
-  const users = (await result).docs.map((doc) => {
-    return {
-      ...doc.data(),
-      id: doc.id,
-      createdAt: doc.data().createdAt.toDate(),
-    };
-  }) as User[];
-  // console.log("users - > ", users);
+export default async function Users() {
+  const userData = await db.select().from(users);
+  // const userData = await db.query.users.findMany();
+  if (!userData.length) return <p>No users found</p>;
+
   return (
     <section className="p-5">
-      {/* <div className="flex justify-between gap-5 items-center mb-5">
-        <h1>Leads</h1>
-        <AddNewBtn />
-      </div> */}
-
-      <UserTable users={users} />
+      <UserTable users={userData} />
     </section>
   );
 }

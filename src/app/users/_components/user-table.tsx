@@ -1,13 +1,15 @@
 "use client";
 import UserForm from "@/components/user-form";
-import { User } from "@/types";
 import { useState } from "react";
 import { MdEdit } from "react-icons/md";
 import AddNewBtn from "./add-new-btn";
+import { User } from "@/db/schema";
 import { deleteUser } from "@/app/actions";
+import { useTransition } from "react";
 
 export default function UserTable({ users }: { users: User[] }) {
-  const [selectedUser, setSelectedUser] = useState<string[]>([]);
+  const [selectedUser, setSelectedUser] = useState<number[]>([]);
+  const [isPending, startTransition] = useTransition();
 
   return (
     <>
@@ -39,10 +41,16 @@ export default function UserTable({ users }: { users: User[] }) {
                   >
                     <button className="btn btn-ghost">Cancel</button>
                     <button
-                      onClick={async () => deleteUser(selectedUser)}
+                      disabled={isPending}
+                      onClick={() => {
+                        startTransition(async () => {
+                          await deleteUser(selectedUser);
+                          setSelectedUser([]);
+                        });
+                      }}
                       className="btn btn-error "
                     >
-                      Delete
+                      {isPending ? "Deleting..." : "Delete"}
                     </button>
                   </form>
                 </div>
@@ -63,7 +71,6 @@ export default function UserTable({ users }: { users: User[] }) {
           {/* head */}
           <thead>
             <tr>
-              {/* <th>Serial No.</th> */}
               <th>
                 <input
                   onChange={(e) => {
@@ -112,13 +119,13 @@ export default function UserTable({ users }: { users: User[] }) {
                   <td>{item.name}</td>
                   <td>{item.email}</td>
                   <td>{item.status}</td>
-                  <td>{item.createdAt.toDateString()}</td>
+                  <td>{item.createdAt}</td>
                   <td>
                     <button
                       onClick={() =>
                         (
                           document.getElementById(
-                            "my-modal"
+                            item.id.toString()
                           ) as HTMLDialogElement
                         ).showModal()
                       }
@@ -127,9 +134,9 @@ export default function UserTable({ users }: { users: User[] }) {
                       <MdEdit size={18} />
                     </button>
 
-                    <dialog id="my-modal" className="modal">
+                    <dialog id={item.id.toString()} className="modal">
                       <div className="modal-box">
-                        <UserForm />
+                        <UserForm user={item} />
                       </div>
 
                       <form method="dialog" className="modal-backdrop">

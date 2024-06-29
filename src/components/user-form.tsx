@@ -5,31 +5,39 @@ import { userSchema } from "@/types/zod-schemas";
 import { z } from "zod";
 import { ErrorMessage } from "@hookform/error-message";
 import { addUser } from "@/app/actions";
+import { User } from "@/db/schema";
+import { useEffect } from "react";
 
-export default function UserForm() {
+export default function UserForm({ user }: { user?: User }) {
   const {
     handleSubmit,
     register,
     reset,
+    setValue,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      status: null,
-    },
   });
 
   async function submitHandler(data: z.infer<typeof userSchema>) {
-    console.log("data ", data);
-    const res = await addUser(data);
-    if (res.success) {
-      reset();
-      (document.getElementById("my-modal") as HTMLDialogElement).close();
+    try {
+      const res = await addUser(data);
+      if (res.success) {
+        reset();
+        (document.getElementById("my-modal") as HTMLDialogElement).close();
+      }
+    } catch (error) {
+      console.log("something went wrong");
     }
-    console.log(res);
   }
+
+  // useEffect(() => {
+  if (user) {
+    setValue("name", user.name);
+    setValue("email", user.email);
+    setValue("status", user.status);
+  }
+  // }, [user]);
 
   return (
     <>
@@ -95,7 +103,11 @@ export default function UserForm() {
             className="btn btn-ghost"
             type="button"
             onClick={() =>
-              (document.getElementById("my-modal") as HTMLDialogElement).close()
+              (
+                document.getElementById(
+                  user?.id?.toString() || "my-modal"
+                ) as HTMLDialogElement
+              ).close()
             }
           >
             Cancel

@@ -7,3 +7,5 @@ export const userSchema = z.object({
   // .nullable()
   // .refine((val) => val !== null, { message: "Please select a value" }),
 });
+
+export type UserSchema = z.infer<typeof userSchema>;

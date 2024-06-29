@@ -1,12 +1,10 @@
 "use client";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userSchema } from "@/types/zod-schemas";
-import { z } from "zod";
+import { userSchema, type UserSchema } from "@/types/zod-schemas";
 import { ErrorMessage } from "@hookform/error-message";
-import { addUser } from "@/app/actions";
+import { addUser, updateUser } from "@/app/actions";
 import { User } from "@/db/schema";
-import { useEffect } from "react";
 
 export default function UserForm({ user }: { user?: User }) {
   const {
@@ -15,29 +13,31 @@ export default function UserForm({ user }: { user?: User }) {
     reset,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<z.infer<typeof userSchema>>({
+  } = useForm<UserSchema>({
     resolver: zodResolver(userSchema),
   });
 
-  async function submitHandler(data: z.infer<typeof userSchema>) {
+  async function submitHandler(data: UserSchema) {
     try {
-      const res = await addUser(data);
+      const res = user ? await updateUser(data, user?.id) : await addUser(data);
       if (res.success) {
         reset();
-        (document.getElementById("my-modal") as HTMLDialogElement).close();
+        (
+          document.getElementById(
+            user?.id?.toString() || "my-modal"
+          ) as HTMLDialogElement
+        ).close();
       }
     } catch (error) {
       console.log("something went wrong");
     }
   }
 
-  // useEffect(() => {
   if (user) {
     setValue("name", user.name);
     setValue("email", user.email);
     setValue("status", user.status);
   }
-  // }, [user]);
 
   return (
     <>
